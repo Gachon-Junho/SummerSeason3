@@ -287,8 +287,8 @@ public class MazeGenerator : MonoBehaviour
                     if (_existWalls[x, y]) continue;
 
                     var myTransform = transform;
-                    var mazeHalfSize = new Vector3(mazeSize.x, 0, mazeSize.y) / 2;
-                    var wallPosition = new Vector3(x, 0.5f, y) - mazeHalfSize + myTransform.position;
+                    var mazeHalfSize = new Vector3(mazeSize.x, mazeSize.y, 0) / 2;
+                    var wallPosition = new Vector3(x, y, 0) - mazeHalfSize + myTransform.position;
 
                     Instantiate(wallPrefab, wallPosition, Quaternion.identity, myTransform);
                 }
@@ -307,8 +307,8 @@ public class MazeGenerator : MonoBehaviour
                     {
                         if (!_existWalls[x, y])
                         {
-                            var mazeHalfSize = new Vector3(mazeSize.x, 0, mazeSize.y) / 2;
-                            var wallPosition = new Vector3(x, 0.5f, y) - mazeHalfSize + transform.position;
+                            var mazeHalfSize = new Vector3(mazeSize.x, mazeSize.y, 0) / 2;
+                            var wallPosition = new Vector3(x, y, 0) - mazeHalfSize + transform.position;
                             Gizmos.DrawCube(wallPosition, Vector3.one);
                         }
                     }
