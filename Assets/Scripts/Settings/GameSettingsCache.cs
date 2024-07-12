@@ -14,7 +14,21 @@ public static class GameSettingsCache
             sizeX = Math.Clamp(value % 2 == 0 ? value + 1 : value, 11, 101);
         }
     }
-    public static int SizeY;
+
+    public static int SizeY
+    {
+        get => sizeY;
+        set
+        {
+            sizeY = Math.Clamp(value % 2 == 0 ? value + 1 : value, 11, 101);
+        }
+    }
+
+    public static float RemainingTime
+    {
+        get => (sizeX + sizeY) * (int)Difficulty % 3f;
+    }
+    
     public static float MusicVolume;
     public static float EffectVolume;
     public static Difficulty Difficulty;

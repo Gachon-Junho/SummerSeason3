@@ -1,10 +1,19 @@
-using System.ComponentModel.Design;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameSettingController : MonoBehaviour
 {
+    private void Start()
+    {
+        GameSettingsCache.SizeX = 50;
+        GameSettingsCache.SizeY = 50;
+        GameSettingsCache.Difficulty = Difficulty.Easy;
+        GameSettingsCache.MusicVolume = 1;
+        GameSettingsCache.EffectVolume = 1;
+        GameSettingsCache.TimeAttack = false;
+    }
+
     public void Open()
     {
         gameObject.SetActive(true);

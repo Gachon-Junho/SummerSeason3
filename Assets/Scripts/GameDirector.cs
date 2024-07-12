@@ -1,29 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameDirector : MonoBehaviour
 {
     [SerializeField] 
     private MazeGenerator mazeGenerator;
-
-    [SerializeField] 
-    private GameObject player;
     
     [SerializeField] 
+    private ItemGenerator itemGenerator;
+
+    [SerializeField] 
+    private GameObject playerPrefab;
+    
+    [SerializeField] 
+    private GameObject destinationPrefab;
+
+    [SerializeField] 
+    private Camera mainCamera;
+
+    [SerializeField] private TMP_Text time;
+    [SerializeField] private TMP_Text ready;
+    [SerializeField] private GameObject dimmedPanel;
+
+    private GameObject player;
     private GameObject destination;
+    
+    private bool isPlaying;
+    
+    public float UsedTime;
     
     // Start is called before the first frame update
     void Start()
     {
-        mazeGenerator.Build(51, 51);
-        Instantiate(player, new Vector3(mazeGenerator.TopLeft.x, mazeGenerator.TopLeft.y, 0), Quaternion.identity);
-        Instantiate(destination, new Vector3(mazeGenerator.BottomRight.x, mazeGenerator.BottomRight.y, 0), Quaternion.identity);
+        GameSettingsCache.SizeX = 50;
+        GameSettingsCache.SizeY = 50;
+        
+        mazeGenerator.Build(GameSettingsCache.SizeX, GameSettingsCache.SizeY);
+        itemGenerator.GenerateItems();
+        
+        player = Instantiate(playerPrefab, new Vector3(mazeGenerator.TopLeft.x, mazeGenerator.TopLeft.y, 0), Quaternion.identity);
+        destination = Instantiate(destinationPrefab, new Vector3(mazeGenerator.BottomRight.x, mazeGenerator.BottomRight.y, 0), Quaternion.identity);
+
+        time.text = GameSettingsCache.TimeAttack ? $"Remaining time: {GameSettingsCache.RemainingTime:F2}" : "Time: 0.00";
+        
+        StartCoroutine(showPreview());
+    }
+
+    IEnumerator showPreview()
+    {
+        mainCamera.transform.position = destination.transform.position;
+        
+        while (Vector3.Distance(mainCamera.transform.position, player.transform.position) > 10)
+        {
+            var forward = Vector3.MoveTowards(mainCamera.transform.position, player.transform.position, 0.02f);
+            mainCamera.transform.position = new Vector3(forward.x, forward.y, -10);
+            
+            yield return null;
+        }
+
+        isPlaying = true;
+        player.GetComponent<Player>().Movable = true;
+        
+        dimmedPanel.SetActive(false);
+        ready.gameObject.SetActive(false);
+        mainCamera.transform.SetParent(player.transform);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (isPlaying)
+        {
+            UsedTime += Time.deltaTime;
+            time.text = GameSettingsCache.TimeAttack
+                ? $"Remaining time: {GameSettingsCache.RemainingTime - UsedTime:F2}"
+                : $"Time: {UsedTime:F2}";
+        }
     }
 }

@@ -25,7 +25,7 @@ public class MazeGenerator : MonoBehaviour
             get
             {
                 var mazeHalfSize = new Vector3(mazeSize.x, mazeSize.y, 0) / 2;
-                var dest = dfs(_existWalls, new bool[_existWalls.GetLength(0), _existWalls.GetLength(1)], 1, mazeSize.y - 2);
+                var dest = dfs(Maze, new bool[Maze.GetLength(0), Maze.GetLength(1)], 1, mazeSize.y - 2);
                 var wallPosition = new Vector3(dest.x, mazeSize.y - dest.y, 0) - mazeHalfSize + transform.position;
                 wallPosition = new Vector3(mazeSize.x - 2, 1, 0) - mazeHalfSize + transform.position;
 
@@ -34,18 +34,34 @@ public class MazeGenerator : MonoBehaviour
         }
 
         private Block[,] _blocks;
-        private bool[,] _existWalls; // 벽이 존재하지 않으면 true
+        public bool[,] Maze; // 벽이 존재하지 않으면 true
         private DisjointSet _disjointSet;
         private readonly Dictionary<int, List<int>> _lastRowBlocks = new Dictionary<int, List<int>>();
 
         [SerializeField] private bool isDrawGizmo;
         [SerializeField] private GameObject wallPrefab;
 
+        public List<Vector2Int> GetRoadIndexes()
+        {
+            List<Vector2Int> indexes = new List<Vector2Int>();
+            
+            for (int i = 0; i < Maze.GetLength(0); i++)
+            {
+                for (int j = 0; j < Maze.GetLength(1); j++)
+                {
+                    if (Maze[i, j])
+                        indexes.Add(new Vector2Int(i, j));
+                }
+            }
+
+            return indexes;
+        }
+
         public void Build(int width, int height)
         {
             mazeSize = new Vector2Int(width, height);
             _blocks = new Block[BlockSize.x, BlockSize.y];
-            _existWalls = new bool[mazeSize.x, mazeSize.y];
+            Maze = new bool[mazeSize.x, mazeSize.y];
             _disjointSet = new DisjointSet(BlockSize.x * BlockSize.y);
             
             InitBlocks();
@@ -170,12 +186,12 @@ public class MazeGenerator : MonoBehaviour
                 for (int y = 0; y < BlockSize.y; y++)
                 {
                     var adjustPosition = new Vector2Int(x * 2 + 1, y * 2 + 1);
-                    _existWalls[adjustPosition.x, adjustPosition.y] = true;
+                    Maze[adjustPosition.x, adjustPosition.y] = true;
 
                     if (_blocks[x, y].OpenWay[(int)Direction.Down])
-                        _existWalls[adjustPosition.x, adjustPosition.y + 1] = true;
+                        Maze[adjustPosition.x, adjustPosition.y + 1] = true;
                     if (_blocks[x, y].OpenWay[(int)Direction.Right])
-                        _existWalls[adjustPosition.x + 1, adjustPosition.y] = true;
+                        Maze[adjustPosition.x + 1, adjustPosition.y] = true;
                 }
             }
         }
@@ -186,7 +202,7 @@ public class MazeGenerator : MonoBehaviour
             {
                 for (int y = 0; y < mazeSize.y; y++)
                 {
-                    if (_existWalls[x, y]) continue;
+                    if (Maze[x, y]) continue;
 
                     var myTransform = transform;
                     var mazeHalfSize = new Vector3(mazeSize.x, mazeSize.y, 0) / 2;
@@ -256,5 +272,65 @@ public class MazeGenerator : MonoBehaviour
             }
 
             return destination;
+        }
+        
+        public List<Vector2Int> FindShortestPath(Vector2Int start, Vector2Int goal)
+        {
+            int[] dx = { 1, 0, -1, 0 }; // 남, 동, 북, 서
+            int[] dy = { 0, 1, 0, -1 };
+            
+            if (!Maze[start.x, start.y] || !Maze[goal.x, goal.y])
+                return null;
+
+            bool[,] visited = new bool[mazeSize.x, mazeSize.y];
+            Vector2Int[,] parent = new Vector2Int[mazeSize.x, mazeSize.y];
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+
+            queue.Enqueue(start);
+            visited[start.x, start.y] = true;
+            parent[start.x, start.y] = new Vector2Int(-1, -1);  // 시작점의 부모는 없음
+
+            while (queue.Count > 0)
+            {
+                Vector2Int current = queue.Dequeue();
+
+                if (current == goal)
+                {
+                    return ConstructPath(parent, goal);
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    int newRow = current.x + dx[i];
+                    int newCol = current.y + dy[i];
+
+                    if (IsValid(newRow, newCol) && Maze[newRow, newCol] && !visited[newRow, newCol])
+                    {
+                        queue.Enqueue(new Vector2Int(newRow, newCol));
+                        visited[newRow, newCol] = true;
+                        parent[newRow, newCol] = current;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private bool IsValid(int row, int col)
+        {
+            return row >= 0 && row < mazeSize.x && col >= 0 && col < mazeSize.y;
+        }
+
+        private List<Vector2Int> ConstructPath(Vector2Int[,] parent, Vector2Int goal)
+        {
+            List<Vector2Int> path = new List<Vector2Int>();
+            
+            for (Vector2Int at = goal; at.x != -1; at = parent[at.x, at.y])
+            {
+                path.Add(at);
+            }
+            
+            path.Reverse();
+            return path;
         }
     }
