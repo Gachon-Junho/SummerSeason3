@@ -32,4 +32,23 @@ public static class GameSettingsCache
 
     private static int sizeX = 51;
     private static int sizeY = 51;
+
+    public static PlayerScore RecentScore;
+
+    public static void SubmitScore(int score, float usedTime)
+    {
+        var newScore = new PlayerScore
+        {
+            Score = score,
+            UsedTime = usedTime,
+            RemainingTime = TimeAttack ? RemainingTime - usedTime : null,
+            Difficulty = Difficulty,
+            SizeX = SizeX,
+            SizeY = SizeY,
+        };
+        
+        RecentScore = newScore;
+        Ranking.Add(newScore);
+        CSVStorage.Write(Ranking, CSVStorage.SCORES_FILE_NAME);
+    }
 }

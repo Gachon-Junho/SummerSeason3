@@ -100,7 +100,7 @@ public class GameDirector : MonoBehaviour
         
         dimmedPanel.SetActive(true);
         gameResultOverlay.SetActive(true);
-        
-        // Todo: 점수제출
+
+        GameSettingsCache.SubmitScore(score, UsedTime);
     }
 }
