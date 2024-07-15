@@ -6,12 +6,7 @@ public class RestraintItem : Item
     [SerializeField]
     private float duration;
     
-    protected override void AdjustGameState()
-    {
-        StartCoroutine(restraintTemporary());
-    }
-    
-    IEnumerator restraintTemporary()
+    protected override IEnumerator AdjustGameState()
     {
         Player.Movable = false;
 

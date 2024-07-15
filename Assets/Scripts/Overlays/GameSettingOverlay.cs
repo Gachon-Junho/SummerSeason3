@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameSettingController : MonoBehaviour
+public class GameSettingOverlay : MonoBehaviour
 {
     private void Start()
     {

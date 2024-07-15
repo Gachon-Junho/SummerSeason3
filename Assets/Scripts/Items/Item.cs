@@ -1,22 +1,24 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class Item : MonoBehaviour
 {
-    protected GameDirector GameDirector;
-    protected Player Player;
+    protected GameDirector GameDirector => gameDirector ??= GameObject.Find("GameDirector").GetComponent<GameDirector>();
+    protected Player Player => player ??= GameObject.Find("Player(Clone)").GetComponent<Player>();
+    
+    private GameDirector gameDirector;
+    private Player player;
 
     private void Update()
     {
-        GameDirector ??= GameObject.Find("GameDirector").GetComponent<GameDirector>();
-        Player ??= GameObject.Find("Player(Clone)").GetComponent<Player>();
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D player)
     {
-        AdjustGameState();
+        player.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(AdjustGameState());
         Destroy(gameObject);
     }
 
-    protected abstract void AdjustGameState();
+    protected abstract IEnumerator AdjustGameState();
 }

@@ -1,9 +1,15 @@
+using System.Collections;
 using UnityEngine;
 
 public class ScoreItem : Item
 {
-    protected override void AdjustGameState()
+    [SerializeField] 
+    private int amount = 100;
+    
+    protected override IEnumerator AdjustGameState()
     {
-        //GameDirector
+        GameDirector.Score += amount;
+        
+        yield break;
     }
 }

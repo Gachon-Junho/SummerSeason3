@@ -21,22 +21,32 @@ public class GameDirector : MonoBehaviour
     private Camera mainCamera;
 
     [SerializeField] private TMP_Text time;
+    [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text ready;
     [SerializeField] private GameObject dimmedPanel;
+    [SerializeField] private GameObject gameResultOverlay;
 
     private GameObject player;
     private GameObject destination;
+    private int score;
     
     private bool isPlaying;
     
     public float UsedTime;
+
+    public int Score
+    {
+        get => score;
+        set
+        {
+            score = value;
+            scoreText.text = $"{value:000000}";
+        }
+    }
     
     // Start is called before the first frame update
     void Start()
     {
-        GameSettingsCache.SizeX = 50;
-        GameSettingsCache.SizeY = 50;
-        
         mazeGenerator.Build(GameSettingsCache.SizeX, GameSettingsCache.SizeY);
         itemGenerator.GenerateItems();
         
@@ -77,6 +87,20 @@ public class GameDirector : MonoBehaviour
             time.text = GameSettingsCache.TimeAttack
                 ? $"Remaining time: {GameSettingsCache.RemainingTime - UsedTime:F2}"
                 : $"Time: {UsedTime:F2}";
+
+            if (GameSettingsCache.TimeAttack && GameSettingsCache.RemainingTime - UsedTime <= 0)
+                GameOver(false);
         }
+    }
+
+    public void GameOver(bool success)
+    {
+        isPlaying = false;
+        player.GetComponent<Player>().Movable = false;
+        
+        dimmedPanel.SetActive(true);
+        gameResultOverlay.SetActive(true);
+        
+        // Todo: 점수제출
     }
 }

@@ -9,12 +9,7 @@ public class SlowItem : Item
     [SerializeField]
     private float duration;
     
-    protected override void AdjustGameState()
-    {
-        StartCoroutine(slowTemporary());
-    }
-
-    IEnumerator slowTemporary()
+    protected override IEnumerator AdjustGameState()
     {
         var original = Player.Speed;
         Player.Speed *= percentage;

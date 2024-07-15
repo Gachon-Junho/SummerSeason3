@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 public static class GameSettingsCache
 {
@@ -24,16 +23,13 @@ public static class GameSettingsCache
         }
     }
 
-    public static float RemainingTime
-    {
-        get => (sizeX + sizeY) * (int)Difficulty % 3f;
-    }
-    
-    public static float MusicVolume;
-    public static float EffectVolume;
-    public static Difficulty Difficulty;
-    public static List<PlayerScore> Ranking;
+    public static float RemainingTime => (sizeX + sizeY) * 3f / (int)Difficulty;
 
-    private static int sizeX;
-    private static int sizeY;
+    public static float MusicVolume = 1;
+    public static float EffectVolume = 1;
+    public static Difficulty Difficulty = Difficulty.Easy;
+    public static List<PlayerScore> Ranking = new List<PlayerScore>();
+
+    private static int sizeX = 51;
+    private static int sizeY = 51;
 }
