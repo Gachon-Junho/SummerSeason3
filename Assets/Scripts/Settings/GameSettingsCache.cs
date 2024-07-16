@@ -41,8 +41,8 @@ public static class GameSettingsCache
         {
             Score = score,
             UsedTime = usedTime,
-            RemainingTime = TimeAttack ? RemainingTime - usedTime : null,
-            Difficulty = Difficulty,
+            RemainingTime = TimeAttack ? RemainingTime - usedTime : -1,
+            Difficulty = (int)Difficulty,
             SizeX = SizeX,
             SizeY = SizeY,
         };

@@ -19,7 +19,7 @@ public class ScoreCard : MonoBehaviour
         PlayerScore = playerScore;
             
         time.text = $"Time: {playerScore.UsedTime:F2}";
-        score.text = $"Score: {playerScore.Score:000000}";
-        difficulty.text = $"Difficulty: {playerScore.Difficulty}";
+        score.text = $"{playerScore.Score:000000}";
+        difficulty.text = $"Difficulty: {(Difficulty)playerScore.Difficulty}";
     }
 }
