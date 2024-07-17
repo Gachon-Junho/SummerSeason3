@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class TimeItem : Item
     
     protected override IEnumerator AdjustGameState()
     {
-        GameDirector.UsedTime -= amount;
+        GameDirector.UsedTime = Math.Clamp(GameDirector.UsedTime - amount, 0, float.MaxValue);
         
         yield break;
     }

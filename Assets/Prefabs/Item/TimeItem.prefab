@@ -177,4 +177,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: 9b1229d99fb8d4ae4b68936ade87d786, type: 3}
   proxy: {fileID: 7221964269085114416, guid: 11720e7632a6a46af985f130772d57c4, type: 3}
-  amount: 10
+  amount: 5
