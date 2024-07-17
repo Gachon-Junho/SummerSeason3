@@ -67,7 +67,7 @@ public class GameDirector : MonoBehaviour
         
         while (Vector3.Distance(mainCamera.transform.position, player.transform.position) > 10)
         {
-            var forward = Vector3.MoveTowards(mainCamera.transform.position, player.transform.position, 0.02f);
+            var forward = Vector3.MoveTowards(mainCamera.transform.position, player.transform.position, 0.04f);
             mainCamera.transform.position = new Vector3(forward.x, forward.y, -10);
             
             yield return null;
