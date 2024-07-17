@@ -4,14 +4,32 @@ using UnityEngine.UI;
 
 public class GameSettingOverlay : MonoBehaviour
 {
+    [SerializeField]
+    private Toggle timeAttack;
+    
+    [SerializeField]
+    private TMP_InputField width;
+    
+    [SerializeField]
+    private TMP_InputField height;
+    
+    [SerializeField]
+    private TMP_Dropdown difficulty;
+    
+    [SerializeField]
+    private Slider music;
+    
+    [SerializeField]
+    private Slider effect;
+    
     private void Start()
     {
-        GameSettingsCache.SizeX = 50;
-        GameSettingsCache.SizeY = 50;
-        GameSettingsCache.Difficulty = Difficulty.Easy;
-        GameSettingsCache.MusicVolume = 1;
-        GameSettingsCache.EffectVolume = 1;
-        GameSettingsCache.TimeAttack = false;
+        timeAttack.isOn = GameSettingsCache.TimeAttack;
+        width.text = GameSettingsCache.SizeX.ToString();
+        height.text = GameSettingsCache.SizeY.ToString();
+        difficulty.value = (int)GameSettingsCache.Difficulty - 1;
+        music.value = GameSettingsCache.MusicVolume;
+        effect.value = GameSettingsCache.EffectVolume;
     }
 
     public void Open()

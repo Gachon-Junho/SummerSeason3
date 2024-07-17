@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81e0fb7ae7e2445782d6a360904661b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: b01862ca8d4c04150996c67edab35a99, type: 3}
+  proxy: {fileID: 7221964269085114416, guid: 11720e7632a6a46af985f130772d57c4, type: 3}
   amount: 100
 --- !u!1 &8703843817330846453
 GameObject:

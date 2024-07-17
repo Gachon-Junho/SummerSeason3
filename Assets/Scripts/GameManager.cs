@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,9 +15,16 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] 
     private TMP_Text recentScore;
+
+    [SerializeField] 
+    private Toggle timeAttack;
+
+    [SerializeField]
+    private AudioSource mainLoop;
     
     private void Start()
     {
+        timeAttack.isOn = GameSettingsCache.TimeAttack;
         GameSettingsCache.Ranking = CSVStorage.Read<PlayerScore>(CSVStorage.SCORES_FILE_NAME).ToList();
 
         if (GameSettingsCache.RecentScore != null)
@@ -24,6 +32,11 @@ public class GameManager : MonoBehaviour
                 $"Recent Score\nTime: {GameSettingsCache.RecentScore.UsedTime:F2}\nScore: {GameSettingsCache.RecentScore.Score:000000}\nDifficulty: {(Difficulty)GameSettingsCache.RecentScore.Difficulty}";
         
         createItem();
+    }
+
+    private void Update()
+    {
+        mainLoop.volume = GameSettingsCache.MusicVolume;
     }
 
     private void createItem()

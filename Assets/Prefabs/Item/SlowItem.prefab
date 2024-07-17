@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61dc4f4a1d7d4f21ad188bb8a5b9a244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: 28568eca7985f4d69894d95a5cfc1ba9, type: 3}
+  proxy: {fileID: 7221964269085114416, guid: 11720e7632a6a46af985f130772d57c4, type: 3}
   percentage: 0.5
   duration: 5
 --- !u!1 &7141144559421790644

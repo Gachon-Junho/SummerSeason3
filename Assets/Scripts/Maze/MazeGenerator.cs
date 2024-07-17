@@ -83,6 +83,8 @@ public class MazeGenerator : MonoBehaviour
         /// </summary>
         private void InitBlocks()
         {
+            Block.Initialize();
+            
             for (int x = 0; x < BlockSize.x; x++)
             {
                 for (int y = 0; y < BlockSize.y; y++)

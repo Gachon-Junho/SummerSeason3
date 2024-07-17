@@ -25,6 +25,7 @@ public class GameDirector : MonoBehaviour
     [SerializeField] private TMP_Text ready;
     [SerializeField] private GameObject dimmedPanel;
     [SerializeField] private GameObject gameResultOverlay;
+    [SerializeField] private AudioSource gameLoop;
 
     private GameObject player;
     private GameObject destination;
@@ -47,6 +48,8 @@ public class GameDirector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameLoop.volume = GameSettingsCache.MusicVolume;
+        
         mazeGenerator.Build(GameSettingsCache.SizeX, GameSettingsCache.SizeY);
         itemGenerator.GenerateItems();
         
@@ -76,6 +79,7 @@ public class GameDirector : MonoBehaviour
         dimmedPanel.SetActive(false);
         ready.gameObject.SetActive(false);
         mainCamera.transform.SetParent(player.transform);
+        gameLoop.Play();
     }
 
     // Update is called once per frame
@@ -97,10 +101,12 @@ public class GameDirector : MonoBehaviour
     {
         isPlaying = false;
         player.GetComponent<Player>().Movable = false;
+        gameLoop.Stop();
         
         dimmedPanel.SetActive(true);
         gameResultOverlay.SetActive(true);
 
-        GameSettingsCache.SubmitScore(score, UsedTime);
+        if (success)
+            GameSettingsCache.SubmitScore(score, UsedTime);
     }
 }

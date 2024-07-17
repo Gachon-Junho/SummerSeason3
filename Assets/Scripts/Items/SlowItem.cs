@@ -11,11 +11,11 @@ public class SlowItem : Item
     
     protected override IEnumerator AdjustGameState()
     {
-        var original = Player.Speed;
-        Player.Speed *= percentage;
+        var original = Player.InitialSpeed;
+        Player.CurrentSpeed *= percentage;
 
         yield return new WaitForSeconds(duration);
 
-        Player.Speed = original;
+        Player.CurrentSpeed = original;
     }
 }

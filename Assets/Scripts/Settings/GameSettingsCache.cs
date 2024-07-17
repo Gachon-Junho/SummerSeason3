@@ -25,8 +25,8 @@ public static class GameSettingsCache
 
     public static float RemainingTime => (sizeX + sizeY) * 3f / (int)Difficulty;
 
-    public static float MusicVolume = 1;
-    public static float EffectVolume = 1;
+    public static float MusicVolume = 0.6f;
+    public static float EffectVolume = 0.6f;
     public static Difficulty Difficulty = Difficulty.Easy;
     public static List<PlayerScore> Ranking = new List<PlayerScore>();
 

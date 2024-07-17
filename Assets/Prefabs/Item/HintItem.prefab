@@ -175,3 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e3a892bded4eba971fe736b212a458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: 9b1229d99fb8d4ae4b68936ade87d786, type: 3}
+  proxy: {fileID: 7221964269085114416, guid: 11720e7632a6a46af985f130772d57c4, type: 3}
+  timeUntilHide: 3
+  hintCellPrefab: {fileID: 4606888848510856693, guid: cea864f39047a4f6083841032f6eeed7, type: 3}

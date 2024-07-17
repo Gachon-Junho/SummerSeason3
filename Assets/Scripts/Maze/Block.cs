@@ -19,4 +19,6 @@ public class Block
 
     public Vector2Int GetPosition(Vector2Int size) => GetPosition(BlockNumber, size);
     public int GetParentIndex(Vector2Int size) => BlockNumber * size.x + BlockNumber % size.y;
+
+    public static void Initialize() => s_increaseGroupNumber = 0;
 }
